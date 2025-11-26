@@ -1,0 +1,83 @@
+# Configuración Global del Proyecto
+project:
+  name: "cancer_tissue_detection"
+  version: "1.0"
+  requirements:
+    min_f1_score: 0.85
+    use_gradcam: true
+    use_data_augmentation: true
+
+# Rutas del Proyecto - TODAS las rutas consolidadas aquí
+paths:
+  data:
+    raw: "00_data/01_raw"
+    processed: "00_data/02_processed"
+    augmented: "00_data/03_augmented"
+    splits: "00_data/04_splits"
+  models:
+    checkpoints: "03_training/model_checkpoints"
+    final_models: "05_results/trained_models"
+  results:
+    training_curves: "05_results/training_curves"
+    performance_reports: "05_results/performance_reports"
+    gradcam: "05_results/grad_cam_images"
+    confusion_matrices: "05_results/confusion_matrices"
+  logs: "03_training/training_logs"
+
+# Configuración de Datos
+data:
+  image_size: [,]  # [height, width]
+  batch_size: 32
+  validation_split: 0.2
+  test_split: 0.15
+  classes: ["cancerous", "non_cancerous"]
+
+# Data Augmentation Configuration
+augmentation:
+  rotation_range: 20
+  width_shift_range: 0.1
+  height_shift_range: 0.1
+  horizontal_flip: true
+  vertical_flip: true
+  zoom_range: 0.2
+  brightness_range: [0.8, 1.2]
+
+# Configuración del Modelo
+model:
+  architecture: "cnn_from_scratch"  # Options: "cnn_from_scratch", "resnet50", "vgg16", "efficientnet"
+  input_shape: [224, 224, 3]
+  num_classes: 2
+  
+  # CNN desde cero
+  cnn_from_scratch:
+    filters: [32, 64, 128, 256]
+    dense_units: [512, 128]
+    dropout_rate: 0.5
+    
+  # Transfer Learning
+  transfer_learning:
+    base_model: "ResNet50"
+    trainable_base: false
+    unfreeze_layers: 10
+
+# Configuración de Entrenamiento
+training:
+  epochs: 50
+  early_stopping_patience: 10
+  reduce_lr_patience: 5
+  initial_learning_rate: 0.001
+  optimizer: "adam"
+  loss_function: "binary_crossentropy"
+
+# Configuración de Evaluación
+evaluation:
+  metrics: ["accuracy", "f1_score", "precision", "recall"]
+  gradcam:
+    target_layer: "conv2d_last"  # Para CNN desde cero
+    # target_layer: "conv5_block3_out"  # Para ResNet50
+    colormap: "jet"
+
+# Configuración de Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
