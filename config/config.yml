@@ -1,13 +1,12 @@
 # Configuración Global del Proyecto
 project:
-  name: "cancer_tissue_detection"
+  name: "cancer_tissue_classification"
   version: "1.0"
   requirements:
     min_f1_score: 0.85
     use_gradcam: true
     use_data_augmentation: true
 
-# Rutas del Proyecto - TODAS las rutas consolidadas aquí
 paths:
   data:
     raw: "00_data/01_raw"
@@ -22,11 +21,10 @@ paths:
     performance_reports: "05_results/performance_reports"
     gradcam: "05_results/grad_cam_images"
     confusion_matrices: "05_results/confusion_matrices"
-  logs: "03_training/training_logs"
 
 # Configuración de Datos
 data:
-  image_size: [,]  # [height, width]
+  image_size: [250, 250]  # [height, width]
   batch_size: 32
   validation_split: 0.2
   test_split: 0.15
