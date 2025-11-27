@@ -1,23 +1,44 @@
 {
   "project_name": "Cancer Tissue Classification",
   "classes": {
-    "0": "tumores",
-    "1": "estroma",
-    "2": "inflamacion_benigna"
+    "1": "tumores",
+    "2": "estroma",
+    "3": "inflamacion_benigna"
   },
   "stats": {
     "train": {
-      "tumores": 0,
-      "estroma": 0,
-      "inflamacion_benigna": 0
+      "tumores": {
+        "count": 37260,
+        "size_mb": 3195.82
+      },
+      "estroma": {
+        "count": 27668,
+        "size_mb": 2305.91
+      },
+      "inflamacion_benigna": {
+        "count": 10315,
+        "size_mb": 899.32
+      }
     },
     "test": {
-      "tumores": 0,
-      "estroma": 0,
-      "inflamacion_benigna": 0
+      "tumores": {
+        "count": 2692,
+        "size_mb": 223.55
+      },
+      "estroma": {
+        "count": 1196,
+        "size_mb": 96.38
+      },
+      "inflamacion_benigna": {
+        "count": 476,
+        "size_mb": 42.09
+      }
     },
-    "total_train": 0,
-    "total_test": 0
+    "total_train_images": 75243,
+    "total_test_images": 4364,
+    "total_train_size_mb": 6401.05,
+    "total_test_size_mb": 362.02,
+    "total_size_mb": 6763.07
   },
-  "organization_date": "2025-11-26 20:21:44.160561"
-}gi
+  "organization_date": "2025-11-27 15:47:40.820237"
+}
