@@ -1,0 +1,23 @@
+{
+  "project_name": "Cancer Tissue Classification",
+  "classes": {
+    "0": "tumores",
+    "1": "estroma",
+    "2": "inflamacion_benigna"
+  },
+  "stats": {
+    "train": {
+      "tumores": 0,
+      "estroma": 0,
+      "inflamacion_benigna": 0
+    },
+    "test": {
+      "tumores": 0,
+      "estroma": 0,
+      "inflamacion_benigna": 0
+    },
+    "total_train": 0,
+    "total_test": 0
+  },
+  "organization_date": "2025-11-26 20:21:44.160561"
+}gi
