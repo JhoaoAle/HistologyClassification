@@ -1,0 +1,12 @@
+- Normalization (Color)
+- Size standardization
+- Data augmentation
+- Tensor conversion (torch)
+
+- Model deployment
+- Scripts tracking
+
+
+- Classic base model (CrossEntopy) after data augmentation, then focalLoss and other to penalize unbalance (Or CrossEntropy with greater weight for minority classes)
+
+TransferLearning (Remove last layer and adapt) Then test unfreezing
