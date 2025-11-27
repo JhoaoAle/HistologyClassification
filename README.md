@@ -1,11 +1,13 @@
+# Histology Classification Project
+
+# Table of Contents
 
 - [Project Structure](#project-structure)
 
-
-
-
 ## Project Structure
-'''
+
+``` plaintext
+Histology_Classification
 ├── 00_data
 │   └── 01_raw
 │       ├── test
@@ -40,7 +42,11 @@
 ├── Recommendation.txt
 ├── environment.yml
 └── requirements.txt
-'''
+```
 
+Installing libraries after creating virtual environment:
 
-tree -I '.git|__pycache__|*.pyc|312_dl|.env|.ipynb_checkpoints' --dirsfirst
+``` powershell
+pip install -r requirements.txt
+```
+

@@ -7,6 +7,12 @@ project:
     use_gradcam: true
     use_data_augmentation: true
 
+downloads:
+  train_id: "1qU2cz-RcbbSHU-B7iOriQXQJaKSxw1vZ"
+ #"1c2mrPeND5-jxL43Im8eDi5PCyuTGBLEX"
+  test_id: "1ZN8dgmtx_wyU5TlKO2nnXFjL2HxlHDrA"
+ #"1n_zGW0qht4rQauar3hQkqpz8sreb0SRv"
+
 paths:
   data:
     raw: "00_data/01_raw"
@@ -14,7 +20,7 @@ paths:
     augmented: "00_data/03_augmented"
     splits: "00_data/04_splits"
   models:
-    checkpoints: "03_training/model_checkpoints"
+    checkpoints: "_training/model_checkpoints"
     final_models: "05_results/trained_models"
   results:
     training_curves: "05_results/training_curves"
