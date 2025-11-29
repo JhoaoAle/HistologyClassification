@@ -1,7 +1,8 @@
 """
-Script para descargar, extraer y organizar datos en 3 clases:
-0-Tumores, 1-Estroma, 2-Inflamación benigna.
-Incluye registro de tamaños y cantidades en dataset_info.json
+Script for downloading, extracting, organizing, and verifying a dataset
+for a 3-class classification problem:
+1-Tumores, 2-Estroma, 3-Inflamación benigna.
+Dumps metadata into a JSON file dataset_info.json.
 """
 
 import os

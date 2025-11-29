@@ -9,17 +9,17 @@
 ``` plaintext
 Histology_Classification
 ├── 00_data
-│   └── 01_raw
-│       ├── test
-│       │   ├── estroma
-│       │   ├── inflamacion_benigna
-│       │   └── tumores
-│       ├── train
-│       │   ├── estroma
-│       │   ├── inflamacion_benigna
-│       │   └── tumores
-│       └── dataset_info.json
-├── 10_preprocessing
+│   ├── 01_raw
+│   │   ├── test
+│   │   │   ├── estroma
+│   │   │   ├── inflamacion_benigna
+│   │   │   └── tumores
+│   │   ├── train
+│   │   │   ├── estroma
+│   │   │   ├── inflamacion_benigna
+│   │   │   └── tumores
+│   │   └── dataset_info.json
+│   ├── 02_processed
 │   └── 03_augmented
 ├── 20_modeling
 ├── 30_training
@@ -33,6 +33,8 @@ Histology_Classification
 │   ├── model_card.md
 │   ├── project_specification.md
 │   └── result_analysis.md
+├── _training
+│   └── model_checkpoints
 ├── config
 │   ├── config.yml
 │   └── hyperparameters.yml
@@ -50,3 +52,15 @@ Installing libraries after creating virtual environment:
 pip install -r requirements.txt
 ```
 
+Updating project structure tree by evaluating context on repo folder (Arch)
+
+``` terminal
+tree -I '.git|__pycache__|*.pyc|312_dl|.env|.ipynb_checkpoints|*.png' --dirsfirst
+```
+
+## Pipeline
+
+### Downloading data
+``` powershell
+python scripts/setup_data.py
+```
