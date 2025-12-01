@@ -3,3 +3,5 @@
 00_data/01_raw/test
 00_data/01_raw/train
 temp_downloads/
+00_data/02_augmented
+00_data/03_train_dataset
