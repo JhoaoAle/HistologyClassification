@@ -16,6 +16,7 @@ from pathlib import Path
 import argparse
 import logging
 from datetime import datetime
+from PIL import Image
 
 # ----------------------------------
 # LOGGING
@@ -217,44 +218,75 @@ def organize_data(source_dir, target_dir):
 # VERIFY + SIZE STATS
 # ----------------------------------
 def verify_organization(root):
-    logger.info("Verificando organización y calculando tamaños...")
+    logger.info("Verificando organización y leyendo dimensiones de imágenes...")
 
     root = Path(root)
+
     stats = {
         "train": {},
         "test": {},
-        "sizes": {"train": 0, "test": 0}
+        "dimensions": {},             # Global dimension count
+        "dimension_anomalies": {}     # Anomalies per split
     }
 
     for split in ["train", "test"]:
+        stats["dimension_anomalies"][split] = []
+        split_dim_counter = {}        # Counts of dimensions inside this split
+
         for _, class_name in CLASS_MAPPING.items():
             class_dir = root / split / class_name
             files = [f for f in class_dir.glob("*") if f.suffix.lower() in IMAGE_EXTS]
 
-            class_info = []
-            total_size = 0
+            class_dim_counter = {}    # Counts per class
 
             for f in files:
-                size = f.stat().st_size
-                class_info.append({
-                    "file": f.name,
-                    "size_mb": round(size / (1024 ** 2), 4)
-                })
-                total_size += size
+                # Try reading image dimensions
+                try:
+                    with Image.open(f) as img:
+                        width, height = img.size
+                except Exception:
+                    width, height = None, None
+                    logger.warning(f"No se pudieron leer dimensiones para: {f}")
+
+                dim_key = f"{width}x{height}"
+
+                # Global counter
+                stats["dimensions"].setdefault(dim_key, 0)
+                stats["dimensions"][dim_key] += 1
+
+                # Split counter
+                split_dim_counter.setdefault(dim_key, 0)
+                split_dim_counter[dim_key] += 1
+
+                # Class counter
+                class_dim_counter.setdefault(dim_key, 0)
+                class_dim_counter[dim_key] += 1
 
             stats[split][class_name] = {
                 "count": len(files),
-                "size_mb": round(total_size / (1024 ** 2), 2)
+                "dimensions": class_dim_counter
             }
 
-            stats["sizes"][split] += total_size
+            logger.info(f"{split}/{class_name}: {len(files)} imágenes")
 
-            logger.info(f"{split}/{class_name}: {len(files)} imágenes, {round(total_size/1048576,2)} MB")
+        # ------ Detect anomalies per split ------
+        if split_dim_counter:
+            majority_dim = max(split_dim_counter, key=split_dim_counter.get)
+
+            anomalies = {
+                dim: count
+                for dim, count in split_dim_counter.items()
+                if dim != majority_dim
+            }
+
+            stats["dimension_anomalies"][split] = {
+                "majority_dimension": majority_dim,
+                "anomalies": anomalies
+            }
+        # -----------------------------------------
 
     logger.info("Verificación completada.")
     return stats
-
-
 # ----------------------------------
 # SAVE JSON INFO
 # ----------------------------------
@@ -265,11 +297,13 @@ def save_dataset_info(paths, stats):
         "stats": {
             "train": stats["train"],
             "test": stats["test"],
+
             "total_train_images": sum(stats["train"][c]["count"] for c in stats["train"]),
             "total_test_images": sum(stats["test"][c]["count"] for c in stats["test"]),
-            "total_train_size_mb": round(stats["sizes"]["train"] / (1024 ** 2), 2),
-            "total_test_size_mb": round(stats["sizes"]["test"] / (1024 ** 2), 2),
-            "total_size_mb": round((stats["sizes"]["train"] + stats["sizes"]["test"]) / (1024 ** 2), 2),
+
+            # NEW clean dimension tracking
+            "dimensions_global": stats["dimensions"],
+            "dimension_anomalies": stats["dimension_anomalies"]
         },
         "organization_date": str(datetime.now())
     }
@@ -279,8 +313,6 @@ def save_dataset_info(paths, stats):
         json.dump(info, f, indent=2, ensure_ascii=False)
 
     logger.info(f"dataset_info.json guardado en {out_path}")
-
-
 # ----------------------------------
 # MAIN
 # ----------------------------------

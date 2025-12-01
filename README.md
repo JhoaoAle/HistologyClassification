@@ -19,8 +19,14 @@ Histology_Classification
 │   │   │   ├── inflamacion_benigna
 │   │   │   └── tumores
 │   │   └── dataset_info.json
-│   ├── 02_processed
-│   └── 03_augmented
+│   ├── 02_augmented
+│   │   └── train
+│   │       ├── estroma
+│   │       └── inflamacion_benigna
+│   └── 03_train_dataset
+│           ├── estroma
+│           ├── inflamacion_benigna
+│           └── tumores
 ├── 20_modeling
 ├── 30_training
 │   └── model_checkpoints
@@ -64,3 +70,19 @@ tree -I '.git|__pycache__|*.pyc|312_dl|.env|.ipynb_checkpoints|*.png' --dirsfirs
 ``` powershell
 python scripts/setup_data.py
 ```
+
+A file called dataset_info.json will be created, where information regarding the dataset can be read, to identify missing values or detect class imbalances. Optionally, the following script can be ran to see a friendlier report of the aforementioned file:
+
+``` powershell
+python scripts/sanity_check.py
+```
+
+``` powershell
+python scripts/data_augmentation_torch.py
+```
+
+``` powershell
+python scripts/merge_into_train.py
+```
+
+

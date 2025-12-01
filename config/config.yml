@@ -16,9 +16,7 @@ downloads:
 paths:
   data:
     raw: "00_data/01_raw"
-    processed: "00_data/02_processed"
-    augmented: "00_data/03_augmented"
-    splits: "00_data/04_splits"
+    augmented: "00_data/02_augmented"
   models:
     checkpoints: "_training/model_checkpoints"
     final_models: "05_results/trained_models"
@@ -30,11 +28,11 @@ paths:
 
 # Configuración de Datos
 data:
-  image_size: [250, 250]  # [height, width]
+  image_size: [224, 224]  # [height, width]
   batch_size: 32
   validation_split: 0.2
   test_split: 0.15
-  classes: ["cancerous", "non_cancerous"]
+  classes: ["estroma", "inflamacion_benigna", "tumores"]
 
 # Data Augmentation Configuration
 augmentation:
@@ -45,12 +43,14 @@ augmentation:
   vertical_flip: true
   zoom_range: 0.2
   brightness_range: [0.8, 1.2]
+  contrast_range: [0.8, 1.2]
+  saturation_range: [0.9, 1.1]
 
 # Configuración del Modelo
 model:
   architecture: "cnn_from_scratch"  # Options: "cnn_from_scratch", "resnet50", "vgg16", "efficientnet"
   input_shape: [224, 224, 3]
-  num_classes: 2
+  num_classes: 3
   
   # CNN desde cero
   cnn_from_scratch:

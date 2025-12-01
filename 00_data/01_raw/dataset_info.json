@@ -9,36 +9,58 @@
     "train": {
       "tumores": {
         "count": 37260,
-        "size_mb": 3195.82
+        "dimensions": {
+          "224x224": 37260
+        }
       },
       "estroma": {
         "count": 27668,
-        "size_mb": 2305.91
+        "dimensions": {
+          "224x224": 27668
+        }
       },
       "inflamacion_benigna": {
         "count": 10315,
-        "size_mb": 899.32
+        "dimensions": {
+          "224x224": 10315
+        }
       }
     },
     "test": {
       "tumores": {
         "count": 2692,
-        "size_mb": 223.55
+        "dimensions": {
+          "224x224": 2692
+        }
       },
       "estroma": {
         "count": 1196,
-        "size_mb": 96.38
+        "dimensions": {
+          "224x224": 1196
+        }
       },
       "inflamacion_benigna": {
         "count": 476,
-        "size_mb": 42.09
+        "dimensions": {
+          "224x224": 476
+        }
       }
     },
     "total_train_images": 75243,
     "total_test_images": 4364,
-    "total_train_size_mb": 6401.05,
-    "total_test_size_mb": 362.02,
-    "total_size_mb": 6763.07
+    "dimensions_global": {
+      "224x224": 79607
+    },
+    "dimension_anomalies": {
+      "train": {
+        "majority_dimension": "224x224",
+        "anomalies": {}
+      },
+      "test": {
+        "majority_dimension": "224x224",
+        "anomalies": {}
+      }
+    }
   },
-  "organization_date": "2025-11-28 18:42:54.893045"
+  "organization_date": "2025-11-30 17:52:11.309601"
 }
