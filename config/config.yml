@@ -17,22 +17,23 @@ paths:
   data:
     raw: "00_data/01_raw"
     augmented: "00_data/02_augmented"
+    augmented_train: "00_data/03_train_dataset"
   models:
     checkpoints: "_training/model_checkpoints"
-    final_models: "05_results/trained_models"
+    final_models: "50_results/trained_models"
   results:
-    training_curves: "05_results/training_curves"
-    performance_reports: "05_results/performance_reports"
-    gradcam: "05_results/grad_cam_images"
-    confusion_matrices: "05_results/confusion_matrices"
+    training_curves: "50_results/training_curves"
+    performance_reports: "50_results/performance_reports"
+    gradcam: "50_results/grad_cam_images"
+    confusion_matrices: "50_results/confusion_matrices"
 
 # Configuración de Datos
 data:
   image_size: [224, 224]  # [height, width]
   batch_size: 32
   validation_split: 0.2
-  test_split: 0.15
   classes: ["estroma", "inflamacion_benigna", "tumores"]
+  use_balancing: true
 
 # Data Augmentation Configuration
 augmentation:
@@ -54,9 +55,9 @@ model:
   
   # CNN desde cero
   cnn_from_scratch:
-    filters: [32, 64, 128, 256]
-    dense_units: [512, 128]
-    dropout_rate: 0.5
+    filters: [32, 64, 128, 256, 512]
+    dense_units: [1024, 256]
+    dropout_rate: 0.2
     
   # Transfer Learning
   transfer_learning:
@@ -66,12 +67,12 @@ model:
 
 # Configuración de Entrenamiento
 training:
-  epochs: 50
+  epochs: 100
   early_stopping_patience: 10
   reduce_lr_patience: 5
   initial_learning_rate: 0.001
   optimizer: "adam"
-  loss_function: "binary_crossentropy"
+  loss_function: "cross_entropy"
 
 # Configuración de Evaluación
 evaluation:

@@ -5,3 +5,5 @@
 temp_downloads/
 00_data/02_augmented
 00_data/03_train_dataset
+scripts/__pycache__
+_training/model_checkpoints/
