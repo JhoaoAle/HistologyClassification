@@ -32,12 +32,12 @@ def main():
 
         cls_final.mkdir(parents=True, exist_ok=True)
 
-        # ---- Copy originals ----
+        # Copy originals
         if cls_raw.exists():
             for f in cls_raw.glob("*.png"):
                 shutil.copy2(f, cls_final / f.name)
 
-        # ---- Copy augmented (only exists for minority classes) ----
+        # Copy augmented (only exists for minority classes)
         if cls_aug.exists():
             for f in cls_aug.glob("*.png"):
                 shutil.copy2(f, cls_final / f.name)

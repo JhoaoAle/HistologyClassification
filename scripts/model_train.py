@@ -13,19 +13,16 @@ from data_loading import load_dataloaders
 from model_cnn import build_model_from_config
 
 
-# ------------------------------------------
-# Load config
-# ------------------------------------------
+# Load config file
 def load_config(path="config/config.yml"):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
 
 def main ():
     train_loader, val_loader, test_loader, num_classes, class_names = load_dataloaders()
     cfg = load_config()
 
-    # Create result dirs
+    # Create result directories
     results_cfg = cfg["paths"]["results"]
 
     curve_dir = Path(results_cfg["training_curves"])
@@ -36,15 +33,10 @@ def main ():
     for d in [curve_dir, report_dir, cm_dir, model_out_dir]:
         d.mkdir(parents=True, exist_ok=True)
 
-
-    # ------------------------------------------
     # Build model
-    # ------------------------------------------
     model, device = build_model_from_config(cfg)
 
-    # ------------------------------------------
     # Training hyperparameters
-    # ------------------------------------------
     epochs = cfg["training"]["epochs"]
     learning_rate = cfg["training"]["initial_learning_rate"]
 
@@ -57,10 +49,7 @@ def main ():
     train_losses = []
     train_accs = []
 
-
-    # ------------------------------------------
     # Training Loop
-    # ------------------------------------------
     for epoch in range(1, epochs + 1):
         model.train()
         train_loss = 0
@@ -95,13 +84,9 @@ def main ():
         # Save checkpoint every epoch
         torch.save(model.state_dict(), checkpoint_dir / f"epoch_{epoch}.pth")
 
-
     print("\nTraining complete.\n")
 
-
-    # ==========================================
-    # TEST EVALUATION
-    # ==========================================
+    # Test evaluation
     model.eval()
     all_preds = []
     all_labels = []
@@ -118,9 +103,7 @@ def main ():
             all_labels.extend(labels.cpu().numpy())
 
 
-    # ------------------------------------------
     # Save Classification Report
-    # ------------------------------------------
     report = classification_report(
     all_labels, all_preds,
     target_names=class_names,
@@ -138,10 +121,7 @@ def main ():
 
     print("Saved classification_report.json")
 
-
-    # ------------------------------------------
-    # Save Confusion Matrix
-    # ------------------------------------------
+    # Confusion Matrix
     cm = confusion_matrix(all_labels, all_preds)
     plt.figure(figsize=(7, 6))
     sns.heatmap(cm, annot=True, fmt="d",
@@ -157,10 +137,7 @@ def main ():
 
     print("Saved confusion_matrix.png")
 
-
-    # ------------------------------------------
-    # Save Training Curves
-    # ------------------------------------------
+    # Training Curves
     plt.figure(figsize=(8, 5))
     plt.plot(train_losses, label="Train Loss")
     plt.plot(train_accs, label="Train Accuracy")
@@ -177,13 +154,9 @@ def main ():
 
     print("Saved training_curves.* files")
 
-
-    # ------------------------------------------
     # Save final model
-    # ------------------------------------------
     torch.save(model.state_dict(), model_out_dir / "final_model.pth")
     print(f"Saved final_model.pth to {model_out_dir}")
-
 
 if __name__ == "__main__":
     main()

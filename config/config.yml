@@ -49,11 +49,10 @@ augmentation:
 
 # Configuración del Modelo
 model:
-  architecture: "cnn_from_scratch"  # Options: "cnn_from_scratch", "resnet50", "vgg16", "efficientnet"
+  architecture: "cnn_from_scratch"
   input_shape: [224, 224, 3]
   num_classes: 3
   
-  # CNN desde cero
   cnn_from_scratch:
     filters: [32, 64, 128, 256, 512]
     dense_units: [1024, 256]
@@ -78,7 +77,7 @@ training:
 evaluation:
   metrics: ["accuracy", "f1_score", "precision", "recall"]
   gradcam:
-    target_layer: "conv2d_last"  # Para CNN desde cero
+    target_layer: "conv2d_last"
     # target_layer: "conv5_block3_out"  # Para ResNet50
     colormap: "jet"
 

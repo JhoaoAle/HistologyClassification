@@ -18,15 +18,11 @@ import logging
 from datetime import datetime
 from PIL import Image
 
-# ----------------------------------
-# LOGGING
-# ----------------------------------
+# Logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-# ----------------------------------
-# CLASS MAPPING
-# ----------------------------------
+# Class mapping
 CLASS_MAPPING = {
     "1": "tumores",
     "2": "estroma",
@@ -35,10 +31,7 @@ CLASS_MAPPING = {
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp"}
 
-
-# ----------------------------------
-# LOAD CONFIG
-# ----------------------------------
+# Load config
 def load_config(config_path="config/config.yml"):
     try:
         with open(config_path, "r") as file:
@@ -111,9 +104,7 @@ def download_data(downloads, temp_dir):
     logger.info("Descargas completadas.")
 
 
-# ----------------------------------
-# EXTRACT ZIP FILES (DETERMINISTIC)
-# ----------------------------------
+# Extract ZIP files
 def extract_files(temp_dir):
     logger.info("Extrayendo archivos ZIP...")
 
@@ -150,14 +141,8 @@ def extract_files(temp_dir):
     logger.info("Extracción completada.")
 
 
-# ----------------------------------
-# FIND REAL ROOT (ROBUST)
-# ----------------------------------
+# Find real root
 def find_real_root(base, depth=5):
-    """
-    Busca dentro de una estructura desconocida hasta encontrar
-    carpetas: 1, 2, 3 (las clases).
-    """
     base = Path(base)
 
     # Depth-first search
@@ -181,9 +166,7 @@ def find_real_root(base, depth=5):
     return result if result else base
 
 
-# ----------------------------------
-# ORGANIZE DATA
-# ----------------------------------
+# Organize data
 def organize_data(source_dir, target_dir):
     logger.info(f"Organizando datos desde {source_dir}...")
 
@@ -214,9 +197,7 @@ def organize_data(source_dir, target_dir):
     return total
 
 
-# ----------------------------------
-# VERIFY + SIZE STATS
-# ----------------------------------
+# Verify + Size stats
 def verify_organization(root):
     logger.info("Verificando organización y leyendo dimensiones de imágenes...")
 
@@ -269,7 +250,7 @@ def verify_organization(root):
 
             logger.info(f"{split}/{class_name}: {len(files)} imágenes")
 
-        # ------ Detect anomalies per split ------
+        # Detect anomalies per split
         if split_dim_counter:
             majority_dim = max(split_dim_counter, key=split_dim_counter.get)
 
@@ -283,13 +264,10 @@ def verify_organization(root):
                 "majority_dimension": majority_dim,
                 "anomalies": anomalies
             }
-        # -----------------------------------------
-
     logger.info("Verificación completada.")
     return stats
-# ----------------------------------
-# SAVE JSON INFO
-# ----------------------------------
+
+
 def save_dataset_info(paths, stats):
     info = {
         "project_name": "Cancer Tissue Classification",
@@ -313,9 +291,8 @@ def save_dataset_info(paths, stats):
         json.dump(info, f, indent=2, ensure_ascii=False)
 
     logger.info(f"dataset_info.json guardado en {out_path}")
-# ----------------------------------
-# MAIN
-# ----------------------------------
+
+
 def main():
     parser = argparse.ArgumentParser(description="Setup de datos para 3 clases")
     parser.add_argument("--config", default="config/config.yml")

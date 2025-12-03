@@ -12,17 +12,13 @@ from data_loading import load_dataloaders
 from model_cnn import build_model_from_config
 
 
-# ------------------------------------------------------------
 # Load config
-# ------------------------------------------------------------
 def load_config(path="config/config.yml"):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
-# ------------------------------------------------------------
 # GradCAM Hook Class
-# ------------------------------------------------------------
 class GradCAM:
     def __init__(self, model, target_layer):
 
@@ -63,14 +59,8 @@ class GradCAM:
 
         return cam.detach().cpu().numpy()
 
-# ------------------------------------------------------------
 # Visualization helper
-# ------------------------------------------------------------
 def overlay_gradcam(img, cam, alpha=0.4):
-    """
-    img: numpy image (H,W,3) in [0,1]
-    cam: CAM heatmap (h,w) in [0,1]
-    """
 
     # Resize CAM to image resolution
     cam_resized = cv2.resize(cam, (img.shape[1], img.shape[0]))
@@ -88,10 +78,6 @@ def overlay_gradcam(img, cam, alpha=0.4):
 
     return overlay
 
-
-# ------------------------------------------------------------
-# Main script
-# ------------------------------------------------------------
 def main():
 
     cfg = load_config()
@@ -109,14 +95,14 @@ def main():
     model.eval()
 
     # GRADCAM target layer (last conv layer)
-    target_layer = model.features[-3]   # This is ALWAYS the last Conv2D in your SimpleCNN
+    target_layer = model.features[-3]   # This is ALWAYS the last Conv2D
     gradcam = GradCAM(model, target_layer)
 
     train_loader, val_loader, test_loader, num_classes, class_names = load_dataloaders()
     classes = test_loader.dataset.classes
     print("\nClasses:", classes)
 
-    # Pick 12 random samples
+    # Pick random samples
     indices = random.sample(range(len(test_loader.dataset)), 12)
 
     # Load all images from dataset, not the loader
@@ -167,11 +153,7 @@ def main():
 
         print(f"Saved: {save_path}")
 
-    print("\n✔ Done! 12 Grad-CAM images saved to:", out_dir)
+    print("\nDone! Grad-CAM images saved to:", out_dir)
 
-
-# ------------------------------------------------------------
-# Entry point
-# ------------------------------------------------------------
 if __name__ == "__main__":
     main()

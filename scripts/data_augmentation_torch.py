@@ -5,28 +5,19 @@ import shutil
 import uuid
 from pathlib import Path
 from xml.etree.ElementPath import ops
-
 import yaml
 from PIL import Image
 import torchvision.transforms as T
 
 
-# ===============================================================
-# LOAD CONFIG / JSON
-# ===============================================================
 def load_config(path="config/config.yml"):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
 
 def load_dataset_info(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
-# ===============================================================
-# BUILD TRANSFORM (FROM YOUR CONFIG)
-# ===============================================================
 def build_transform(cfg):
     ops = []
 
@@ -63,18 +54,10 @@ def build_transform(cfg):
 
     return T.Compose(ops)
 
-
-# ===============================================================
-# ALWAYS SAVE PNG
-# ===============================================================
 def save_png(img, out_path):
     out_path = out_path.with_suffix(".png")
     img.save(out_path, format="PNG")
 
-
-# ===============================================================
-# UPSAMPLE A SINGLE CLASS
-# ===============================================================
 def upsample_class(class_dir, target_count, out_dir, transform):
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -107,10 +90,6 @@ def upsample_class(class_dir, target_count, out_dir, transform):
 
         i += 1
 
-
-# ===============================================================
-# MAIN
-# ===============================================================
 def main():
     parser = argparse.ArgumentParser(description="Augment minority classes only.")
     parser.add_argument("--config", default="config/config.yml")
@@ -144,7 +123,7 @@ def main():
 
     print("\nMinority classes:", minority_classes)
 
-    # Perform augmentation ONLY on minority classes
+    # Perform augmentation on minority classes
     for cls in minority_classes:
         class_dir = raw_root / "train" / cls
         out_dir = aug_root / "train" / cls
@@ -154,7 +133,6 @@ def main():
 
     print("\nAll minority classes upsampled successfully.")
     print("Augmented dataset stored in:", aug_root)
-
 
 if __name__ == "__main__":
     main()

@@ -2,17 +2,12 @@ import torch
 import torch.nn as nn
 import yaml
 
-# ----------------------------------------------------
 # Load configuration
-# ----------------------------------------------------
 def load_config(path="config/config.yml"):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
-
-# ----------------------------------------------------
 # CNN with BatchNorm
-# ----------------------------------------------------
 class SimpleCNN(nn.Module):
     def __init__(self, filters, dense_units, dropout, num_classes):
         super().__init__()
@@ -20,7 +15,7 @@ class SimpleCNN(nn.Module):
         layers = []
         in_channels = 3
         
-        # ---- Feature extractor with BatchNorm ----
+        #Feature extractor with BatchNorm
         for f in filters:
             layers += [
                 nn.Conv2d(in_channels, f, kernel_size=3, padding=1),
@@ -33,14 +28,13 @@ class SimpleCNN(nn.Module):
         self.features = nn.Sequential(*layers)
         self.global_pool = nn.AdaptiveAvgPool2d((1, 1))
 
-        # ---- Classifier ----
+        # Classifier
         classifier = []
         input_dim = in_channels
 
         for units in dense_units:
             classifier += [
                 nn.Linear(input_dim, units),
-                nn.BatchNorm1d(units),             # <- Also recommended!
                 nn.ReLU(inplace=True),
                 nn.Dropout(dropout)
             ]
@@ -56,9 +50,7 @@ class SimpleCNN(nn.Module):
         return self.classifier(x)
 
 
-# ----------------------------------------------------
 # Build model from config
-# ----------------------------------------------------
 def build_model_from_config(cfg):
     cnn_cfg = cfg["model"]["cnn_from_scratch"]
     model = SimpleCNN(

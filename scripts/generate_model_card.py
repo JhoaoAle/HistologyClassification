@@ -4,9 +4,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-# --------------------------------------------------------
-# LOAD CONFIG AND METRICS
-# --------------------------------------------------------
+# Load config file
 def load_config(path="config/config.yml"):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
@@ -17,17 +15,8 @@ def load_classification_report(report_path):
         return json.load(f)
 
 
-# --------------------------------------------------------
-# UTILITIES: robust path resolution for config entries
-# --------------------------------------------------------
+# Utilities: robust path resolution for config entries
 def resolve_path_entry(entry, default: Path):
-    """
-    Accepts a config entry that may be:
-      - a string path
-      - a pathlib.Path
-      - a dict containing one or more path-like string values
-    Returns a Path object. If nothing useful is found, returns default.
-    """
     if isinstance(entry, (str, Path)):
         return Path(entry)
     if isinstance(entry, dict):
@@ -44,11 +33,6 @@ def resolve_path_entry(entry, default: Path):
 
 
 def find_classification_report(start_dirs):
-    """
-    Given an iterable of candidate directories (Path), look for
-    performance_reports/classification_report.json under them.
-    As a final fallback, search the repo for any classification_report.json.
-    """
     filename = "classification_report.json"
     for d in start_dirs:
         p = Path(d) / "performance_reports" / filename
@@ -61,10 +45,6 @@ def find_classification_report(start_dirs):
     matches = list(repo_root.rglob(filename))
     return matches[0] if matches else None
 
-
-# --------------------------------------------------------
-# FORMAT SECTIONS
-# --------------------------------------------------------
 def format_metrics_table(report):
     """Create markdown table for class-level metrics."""
     md = "| Class | Precision | Recall | F1-Score | Support |\n"
